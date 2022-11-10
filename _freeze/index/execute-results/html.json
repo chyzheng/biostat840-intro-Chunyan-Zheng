@@ -1,0 +1,14 @@
+{
+  "hash": "e3f37441779fb3c3421741b48c5628ea",
+  "result": {
+    "markdown": "---\ntitle: \"Chunyan Zheng\"\n---\n\n\nHello! My name is Chunyan Zheng, and I am a second-year MHS student in Infectious Disease Epidemiology. I enjoy the company of my cat, and here is a picture of her.\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](cat.JPG){fig-align='center'}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,6 +1,6 @@
 project:
   type: website
-
+  output-dir: docs
 website:
   title: "Chunyan Zheng"
   navbar:
@@ -18,3 +18,5 @@ format:
 
 editor: visual
 
+execute: 
+  freeze: auto
