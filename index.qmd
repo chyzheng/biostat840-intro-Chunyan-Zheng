@@ -1,0 +1,12 @@
+---
+title: "Chunyan Zheng"
+---
+
+Hello! My name is Chunyan Zheng, and I am a second-year MHS student in Infectious Disease Epidemiology. I enjoy the company of my cat, and here is a picture of her.
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+knitr::include_graphics("cat.JPG")
+```

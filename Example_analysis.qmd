@@ -1,0 +1,138 @@
+---
+title: "Example analysis"
+bibliography: reference.bib
+---
+
+## Questions:
+
+What are the average calorie content for Frappuccino of different sizes, and how sugar or fat content related to the calories in Frappuccino? How much caffeine is contained in each Frappuccino beverage?
+
+## Intended Audience:
+
+Those who drink Starbucks everyday, especially those who loves Frappuccino, and who are interested in the nutrition content in Frappuccino. As many kinds of Frappuccino are listed "unhealthy" drink in Starbucks [@staff20HealthiestUnhealthiest], it is important to know the nutrition fact of Frappuccino.
+
+## Original data:
+
+The original data is from Official Starbucks Nutritional dataset from the pdf *Starbucks Coffee Company* Beverage Nutrition Information. The dataset used here is from TidyTuesday, December 21, 2021. (https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-12-21/starbucks.csv)
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+knitr::include_graphics("starbucks.jpg")
+```
+
+[@behanceStarbucksMenuInfographic]
+
+## Data dictionary: 
+
+https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-12-21
+
+```{r}
+library(here)
+library(tidyverse)
+if(!dir.exists(here("data"))) { dir.create(here("data")) }
+
+if(!file.exists(here("data","starbucks.RDS"))) {
+  csv <- 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-12-21/starbucks.csv'
+  starbucks <- readr::read_csv(csv)
+  
+  # save the file to RDS objects
+  saveRDS(starbucks, file= here("data","starbucks.RDS"))
+}
+
+starbucks <- readRDS(here("data","starbucks.RDS"))
+```
+
+```{r}
+mean_cl<-starbucks%>%filter(grepl('Frappuccino', product_name))%>%select(product_name, calories, size)%>%group_by(product_name,size)%>%summarise(average_calories=mean(calories))
+mean_cl
+```
+
+```{r}
+ggplot(mean_cl, aes(x=average_calories,
+                  y=reorder(product_name, -average_calories)))+
+  geom_col(width=0.5)+
+  facet_grid(.~size)+
+  labs(title = "Average calories for Frappuccino",
+  subtitle = "Bar chart of mean calories for Frappuccino",
+  caption="This graph shows the average calories for different kinds of Frappuccino from Starbucks in decending order")+
+  ylab("Product name") + xlab("Mean calories(KCal)")+
+  theme(axis.text.x = element_text(angle = 60, hjust=1, size =8),
+    plot.title = element_text(color="cadetblue", size=15, face="bold.italic"),
+    plot.subtitle=element_text(size=8,color="black"),
+    axis.title.x = element_text(color="azure4", size=14, face="bold"),
+    axis.title.y = element_text(color="cornflowerblue", size=14, face="bold"))
+```
+
+:::{.callout-note}
+It is also important to learn about whether it is sugar or fat contribute more to calories in Frappuccino.
+
+Calorie count: sugar has 4 calories/g and fat has 9 calories/g [@NutrientCalorieCount].
+:::
+
+```{r}
+cl_sugar_fat<-starbucks%>%filter(grepl('Frappuccino', product_name))%>%select(product_name, calories, sugar_g, total_fat_g)%>%group_by(product_name)%>%summarise(average_calories=mean(calories), average_sugar=mean(sugar_g), average_fat=mean(total_fat_g))
+cl_sugar_fat
+```
+
+```{r}
+colors <- c("Fat" = "steelblue", "Sugar" = "red")
+ggplot(cl_sugar_fat, aes(x=average_calories))+ 
+  geom_line(aes(y = average_sugar, color = "Sugar")) + 
+  geom_line(aes(y = average_fat, color="Fat"))+
+  labs(title = "Line chart of average sugar/fat over calories",
+  subtitle = "this graph shows how average sugar/fat is related to calories",
+  caption="The graph shows that average sugar content is more related to average calorie change",
+  x = "Average calories(KCal)",
+  y = "Average nutrient(g)",
+  color = "Legend")+
+  theme(
+    plot.title = element_text(color="cadetblue", size=15, face="bold.italic"),
+    plot.subtitle=element_text(size=8,color="black"),
+    axis.title.x = element_text(color="azure4", size=14, face="bold"),
+    axis.title.y = element_text(color="cornflowerblue", size=14, face="bold"),
+    axis.text = element_text(size =10))+
+    scale_color_manual(values = colors)
+```
+
+:::{.callout-tip}
+Manually added legend for different nutrient groups here
+:::
+
+```{r}
+#| column: margin
+mean_cf<-starbucks%>%filter(grepl('Frappuccino', product_name))%>%select(product_name, caffeine_mg)%>%group_by(product_name)%>%summarise(average_caffeine=mean(caffeine_mg))%>%arrange(average_caffeine)
+head(mean_cf,n=5)
+tail(mean_cf, n=5)
+```
+
+```{r}
+ggplot(mean_cf, aes(y=reorder(product_name, -average_caffeine),
+                  x=average_caffeine))+
+  geom_point()+
+  labs(title = "Scatter Plot of average caffeine",
+  subtitle = "the graph shows mean caffeine in different Frappuccino of Starbucks",
+  caption="the average caffeine content is shown in descending order")+
+  xlab("Average caffeine (mg)") + ylab("Product name")+
+  theme(
+    plot.title = element_text(color="cadetblue", size=15, face="bold.italic"),
+    plot.subtitle=element_text(size=8,color="black"),
+    axis.title.x = element_text(color="azure4", size=14, face="bold"),
+    axis.title.y = element_text(color="cornflowerblue", size=14, face="bold"),
+    axis.text = element_text(size =10))
+```
+
+::: {.callout-note appearance="simple"}
+Use average caffeine here but not separated by size because all Frappuccino have three size types: grande, tall. venti
+:::
+
+## Summary
+
+From the analysis above, we can see that Frappuccino light has lower calories than Frappuccino blended, and Java Chip Frappuccino Blended has the highest calorie content. Therefore, for those people love Frappuccino but want to have less calories intake, they should choose Frappuccino Light instead of Frappuccino Blended. From the line chart compare sugar and fat over calories, we can see that change of sugar content affect the calories more than fat. Last but not least, Vanilla Bean Cream Frappuccino Blended and Strawberry & Creme Frappuccino Blended have 0 caffeine and Espresso Frappuccino (both light and blended) has the highest caffeine content.
+
+## Function used
+
+\-'dplyr': 'group_by()', 'summarise()', 'filter()', 'select()', 'arrange()'
+
+\-'ggplot2': 'geom_point()', 'geom_line()', 'geom_col()' 'facet_grid()'

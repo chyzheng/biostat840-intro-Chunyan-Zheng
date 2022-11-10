@@ -1,0 +1,20 @@
+project:
+  type: website
+
+website:
+  title: "Chunyan Zheng"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+      - Example_analysis.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+

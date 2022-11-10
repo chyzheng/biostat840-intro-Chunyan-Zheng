@@ -1,0 +1,7 @@
+---
+title: "About"
+---
+
+I am a MHS student in Epidemiology at Johns Hopkins, and I had my undergraduate at UC Davis majoring in Neurobiology, Physiology, and Behavior. Switching from biological field to a more quantitative field is challenging yet interesting to me because now I can observe and learn the world from different perspectives. Also, I am a beginner in statistical and programming language, and I am trying to learn different programming languages (STATA. SAS and R).
+
+My main interest is in infectious disease epidemiology, and my thesis is about vaccines and COVID-19 breakthrough infections. I learned a lot from doing research on this topic. In the future, I hope to work in a industry related to infectious disease epidemiology.
