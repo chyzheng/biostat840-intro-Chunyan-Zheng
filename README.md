@@ -1,4 +1,5 @@
-Biostat 840 Project 1
+## Biostat 840 Project 1
+
 Link to the website: https://chyzheng.github.io/biostat840-intro-Chunyan-Zheng/
 
 This website is authored by Chunyan Zheng.
